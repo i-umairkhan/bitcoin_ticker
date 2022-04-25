@@ -16,11 +16,12 @@ class _PriceScreenState extends State<PriceScreen> {
   String selectedCurrency = 'USD';
   String btcInUsd = '?';
   late String rate;
+
   void getData() async {
-    rate = await coinData.getCoinData();
-    var mydouble = double.parse(rate);
+    rate = await coinData.getCoinData(selectedCurrency);
+    var btcRate = double.parse(rate);
     setState(() {
-      btcInUsd = mydouble.toStringAsFixed(0);
+      btcInUsd = btcRate.toStringAsFixed(0);
     });
   }
 
@@ -40,6 +41,7 @@ class _PriceScreenState extends State<PriceScreen> {
       onChanged: (value) {
         setState(() {
           selectedCurrency = value!;
+          getData();
         });
       },
     );
@@ -87,7 +89,7 @@ class _PriceScreenState extends State<PriceScreen> {
                 padding: const EdgeInsets.symmetric(
                     vertical: 15.0, horizontal: 28.0),
                 child: Text(
-                  '1 BTC = $btcInUsd USD',
+                  '1 BTC = $btcInUsd $selectedCurrency',
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     fontSize: 20.0,
