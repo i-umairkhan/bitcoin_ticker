@@ -3,7 +3,6 @@ import 'package:http/http.dart' as http;
 
 const String apiKey = '75EAB492-D9C6-4CCE-AC8F-ACC8ED5EF472';
 String url = 'https://rest.coinapi.io/v1/exchangerate/BTC/';
-// String url = 'https://rest.coinapi.io/v1/exchangerate/BTC/USD?apikey=$apiKey';
 
 const List<String> currenciesList = [
   'AUD',
