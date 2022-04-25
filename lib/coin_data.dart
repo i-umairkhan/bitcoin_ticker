@@ -1,3 +1,6 @@
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
 const List<String> currenciesList = [
   'AUD',
   'BRL',
@@ -27,5 +30,11 @@ const List<String> cryptoList = [
   'ETH',
   'LTC',
 ];
+
+Future<String> getData(String url) async {
+  http.Response response = await http.get(Uri.parse(url));
+  Map data = jsonDecode(response.body);
+  return (data['rate']);
+}
 
 class CoinData {}

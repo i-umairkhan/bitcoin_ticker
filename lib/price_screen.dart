@@ -3,6 +3,11 @@ import 'coin_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:io' show Platform;
 
+const String apiKey = '75EAB492-D9C6-4CCE-AC8F-ACC8ED5EF472';
+
+const String url =
+    'https://rest.coinapi.io/v1/exchangerate/BTC/USD?apikey=$apiKey';
+
 class PriceScreen extends StatefulWidget {
   const PriceScreen({Key? key}) : super(key: key);
 
@@ -91,14 +96,3 @@ class _PriceScreenState extends State<PriceScreen> {
     );
   }
 }
-
-// Android List
-// DropdownButton<String>(
-//               value: selectedCurrency,
-//               items: getDropDOwnItems(),
-//               onChanged: (value) {
-//                 setState(() {
-//                   selectedCurrency = value!;
-//                 });
-//               },
-//             ),
