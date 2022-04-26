@@ -1,9 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-const String apiKey = '75EAB492-D9C6-4CCE-AC8F-ACC8ED5EF472';
-String url = 'https://rest.coinapi.io/v1/exchangerate/BTC/';
-
 const List<String> currenciesList = [
   'AUD',
   'BRL',
@@ -28,25 +25,32 @@ const List<String> currenciesList = [
   'ZAR'
 ];
 
-const List<String> cryptoList = [
-  'BTC',
-  'ETH',
-  'LTC',
-];
+const List<String> cryptoList = ['BTC', 'ETH', 'LTC'];
+
+const coinAPIURL = 'https://rest.coinapi.io/v1/exchangerate';
+const String apiKey = '75EAB492-D9C6-4CCE-AC8F-ACC8ED5EF472';
 
 class CoinData {
-  late Map data;
-  late String price;
-
-  Future<String> getCoinData(String selectedCurrency) async {
-    String newUrl = '$url$selectedCurrency?apikey=$apiKey';
-    http.Response response = await http.get(Uri.parse(newUrl));
-    if (response.statusCode == 200) {
-      data = jsonDecode(response.body);
-      price = data['rate'].toString();
-      return price;
-    } else {
-      throw 'Problem Connecting';
+  Future getCoinData(String selectedCurrency) async {
+    //4: Use a for loop here to loop through the cryptoList and request the data for each of them in turn.
+    //5: Return a Map of the results instead of a single value.
+    Map<String, String> cryptoPrices = {};
+    for (String crypto in cryptoList) {
+      //Update the URL to use the crypto symbol from the cryptoList
+      String requestURL =
+          '$coinAPIURL/$crypto/$selectedCurrency?apikey=$apiKey';
+      http.Response response = await http.get(Uri.parse(requestURL));
+      if (response.statusCode == 200) {
+        var decodedData = jsonDecode(response.body);
+        double lastPrice = decodedData['rate'];
+        //Create a new key value pair, with the key being the crypto symbol and the value being the lastPrice of that crypto currency.
+        cryptoPrices[crypto] = lastPrice.toStringAsFixed(0);
+      } else {
+        print(response.statusCode);
+        throw 'Problem with the get request';
+      }
     }
+    return cryptoPrices;
   }
 }
+
